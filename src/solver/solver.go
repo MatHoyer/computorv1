@@ -50,10 +50,29 @@ func solveDegree2(pol polynomial.Polynomial) {
 	fmt.Println("  •", fmt.Sprintf("%g", delta))
 
 	if delta > 0 {
-		fmt.Println("Delta is strictly positive, so there are 2 real solutions")
+		fmt.Println("Delta is strictly positive, so there are 2 real solutions:")
+	
+		sol1 := (-left.Values[1].Value - float32(math.Sqrt(delta))) / (2 * left.Values[2].Value)
+		sol2 := (-left.Values[1].Value + float32(math.Sqrt(delta))) / (2 * left.Values[2].Value)
+		fmt.Printf("%g\n", sol1)
+		fmt.Printf("%g\n", sol2)
 	} else if delta == 0 {
-		fmt.Println("Delta is equal to 0, so there is 1 real solution")
+		fmt.Println("Delta is equal to 0, so there is 1 real solution:")
+	
+		sol := -left.Values[1].Value / (2 * left.Values[2].Value)
+		fmt.Printf("%g\n", sol)
 	} else {
-		fmt.Println("Delta is strictly negative, so there are 2 complex solutions")
+		fmt.Println("Delta is strictly negative, so there are 2 complex solutions:")
+		
+		delta = -delta
+		denominator := (2 * left.Values[2].Value)
+		ratio := int(left.Values[1].Value) % int(denominator)
+
+		firstNumerator := (-left.Values[1].Value) / float32(ratio)
+		secondNumerator := float32(math.Sqrt(delta)) / float32(ratio)
+		denominator = denominator / float32(ratio)
+
+		fmt.Printf("%g/%g - %gi/%g\n", firstNumerator, denominator, secondNumerator, denominator)
+		fmt.Printf("%g/%g + %gi/%g\n", firstNumerator, denominator, secondNumerator, denominator)
 	}
 }
