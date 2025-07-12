@@ -67,8 +67,10 @@ func Str(num Number) string {
 	prefix := ""
 	xDegree := ""
 
-	if num.Degree == 0 || num.Value != 1 {
+	if num.Degree == 0 || (num.Value != 1 && num.Value != -1) {
 		prefix = fmt.Sprintf("%g", num.Value)
+	} else if num.Value == -1 {
+		prefix = "-"
 	}
 
 	if num.Degree == 1 {

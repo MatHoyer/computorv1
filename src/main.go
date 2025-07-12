@@ -1,8 +1,10 @@
 package main
 
 import (
+	"computorv1/src/expression"
 	"computorv1/src/polynomial"
 	"computorv1/src/polynomialParser"
+	"computorv1/src/solver"
 	"fmt"
 	"os"
 )
@@ -14,12 +16,20 @@ func main() {
 	pol := polynomialParser.Parse(polynomialInput)
 
 	fmt.Println("Polynomial:", polynomial.Str(*pol))
-	fmt.Println("Reduce each sides...")
+
+	fmt.Println("\nReduce each sides...")
 	polynomial.Simplify(pol)
 	fmt.Println("Reduced sides polynomial:", polynomial.Str(*pol))
-	fmt.Println("Regroup all on left side...")
+
+	fmt.Println("\nRegroup all on left side...")
 	polynomial.Regroup(pol)
-	fmt.Println("Reduce...")
+
+	fmt.Println("\nFinal reduce...")
 	polynomial.Simplify(pol)
 	fmt.Println("Final reduced polynomial:", polynomial.Str(*pol))
+	fmt.Println("Polynomial degree:", expression.GetHightestDegree(*pol.Left))
+
+	fmt.Println("\nSolve...")
+	solver.Solve(*pol)
+
 }

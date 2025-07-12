@@ -30,7 +30,7 @@ func Simplify(pol *Polynomial) {
 			fmt.Println(" Left:")
 			isFirstModify = false
 		}
-		fmt.Println("   •", expression.Str(*pol.Left))
+		fmt.Println("  •", expression.Str(*pol.Left))
 	}
 	isFirstModify = true
 	for expression.Simplify(pol.Right) {
@@ -38,7 +38,7 @@ func Simplify(pol *Polynomial) {
 			fmt.Println(" Right:")
 			isFirstModify = false
 		}
-		fmt.Println("   •", expression.Str(*pol.Right))
+		fmt.Println("  •", expression.Str(*pol.Right))
 	}
 }
 
@@ -52,9 +52,23 @@ func Regroup(pol *Polynomial) {
 		if !ok {
 			panic("Fatal error in: polynomial.Regroup")
 		}
-		number.Oposite(v)
-		expression.Append(pol.Left, v)
-		delete(pol.Right.Values, key)
+		BasicTransfer(
+			pol.Right,
+			pol.Left,
+			key,
+		)
 		fmt.Println(" •", Str(*pol))
 	}
+	fmt.Println("All on left polynome:", Str(*pol))
+}
+
+func BasicTransfer(from *expression.Expression, to *expression.Expression, key int) {
+	number.Oposite(from.Values[key])
+	expression.Append(to, from.Values[key])
+	delete(from.Values, key)
+}
+
+func DivideTransfer(from *expression.Expression, to *expression.Expression, key int) {
+	expression.Append(to, number.Create(from.Values[key].Value, 0))
+	from.Values[key].Value = 1
 }

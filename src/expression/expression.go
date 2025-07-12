@@ -67,6 +67,12 @@ func GetValuesAsSlice(exp Expression) []*number.Number {
 	return values
 }
 
+func GetHightestDegree(exp Expression) int {
+	values := GetValuesAsSlice(exp)
+
+	return values[0].Degree
+}
+
 func Append(exp *Expression, value *number.Number) {
 	_, ok := exp.Values[value.Degree]
 	if ok {
@@ -85,7 +91,17 @@ func Simplify(exp *Expression) bool {
 
 	v, ok := exp.Values[value.Degree]
 	if ok {
-		number.Add(v, value)
+		switch exp.Operation {
+		case "+":
+			number.Add(v, value)
+		case "/":
+			number.Divide(v, value)
+		case "*":
+			number.Multiply(v, value)
+		}
+		if v.Value == 0 {
+			delete(exp.Values, v.Degree)
+		}
 	} else {
 		exp.Values[value.Degree] = value
 	}
