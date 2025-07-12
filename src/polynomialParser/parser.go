@@ -1,44 +1,30 @@
 package polynomialParser
 
 import (
-	"computorv1/src/number"
-	"fmt"
-	"regexp"
-	"strconv"
+	"computorv1/src/expression"
+	"computorv1/src/polynomial"
 	"strings"
 )
 
-func Parse(input string) {
+func Parse(input string) *polynomial.Polynomial {
 	sides := strings.Split(input, "=")
 	if len(sides) != 2 {
 		panic("Wrong number of sides for the given polynomial")
 	}
 
-	for _, side := range(sides) {
-		side = strings.ReplaceAll(side, " ", "")
-		re := regexp.MustCompile(`[+\-]?\s*[^+\-]+`)
-		parts := re.FindAllString(side, -1)
-		for _, part := range(parts) {
-			part = strings.ReplaceAll(part, "*", "")
-			part = strings.ReplaceAll(part, "^", "")
-			splitResult := strings.Split(part, "X")
-			if len(splitResult) != 2 {
-				panic(fmt.Sprintf("Invalid polynomial term: %s", part))
-			}
-			value, degree := splitResult[0], splitResult[1]
+	expL := expression.Create("+")
+	expR := expression.Create("+")
+	pol := polynomial.Create(expL, expR)
 
-			f, err := strconv.ParseFloat(value, 32)
-			if err != nil{
-				panic(fmt.Sprintf("%s isn't a float", value))
-			}
-
-			i, err := strconv.Atoi(degree)
-			if err != nil{
-				panic(fmt.Sprintf("%s isn't a int", degree))
-			}
-
-			var n = number.Create(float32(f), i)
-			fmt.Println(number.Str(*n))
-		}
+	var leftParts []string = ParseSide(sides[0])
+	for _, part := range(leftParts) {
+		expression.Append(expL, ParsePart(part))
 	}
+
+	var rightParts []string = ParseSide(sides[1])
+	for _, part := range(rightParts) {
+		expression.Append(expR, ParsePart(part))
+	}
+
+	return pol
 }

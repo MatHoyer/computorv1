@@ -11,11 +11,19 @@ type Number struct {
 }
 
 func Create(value float32, degree int) *Number {
-	return &Number{value, degree, false}
+	return &Number{
+		Value: value,
+		Degree: degree,
+		IsRoot: false,
+	}
 }
 
 func CreateRoot(value float32, degree int) *Number {
-	return &Number{value, degree, true}
+	return &Number{
+		Value: value,
+		Degree: degree,
+		IsRoot: true,
+	}
 }
 
 func Add(num *Number, other *Number) {
@@ -38,6 +46,19 @@ func Divide(num *Number, other *Number) {
 	num.Degree -= other.Degree
 }
 
+func Eq(num Number, other Number) bool {
+	if num.Value != other.Value {
+		return false
+	}
+	if num.Degree != other.Degree {
+		return false
+	}
+	if num.IsRoot != other.IsRoot {
+		return false
+	}
+	return true
+}
+
 func Str(num Number) string {
 	if num.Value == 0 {
 		return "0"
@@ -57,4 +78,8 @@ func Str(num Number) string {
 	}
 
 	return prefix + xDegree
+}
+
+func Oposite(num *Number) {
+	num.Value = -num.Value
 }
