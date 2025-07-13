@@ -7,6 +7,7 @@ import (
 )
 
 func Parse(input string) *polynomial.Polynomial {
+	input = strings.ReplaceAll(input, " ", "")
 	sides := strings.Split(input, "=")
 	if len(sides) != 2 {
 		panic("Wrong number of sides for the given polynomial")
