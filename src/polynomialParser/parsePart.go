@@ -64,7 +64,6 @@ func ParsePart(part string) *number.Number {
 	part = strings.ReplaceAll(part, "*", "")
 	part = strings.ReplaceAll(part, "^", "")
 
-	fmt.Println(part)
 	if strings.Contains(part, "X") {
 		splitted := strings.Split(part, "X")
 

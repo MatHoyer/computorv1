@@ -69,6 +69,9 @@ func GetValuesAsSlice(exp Expression) []*number.Number {
 
 func GetHightestDegree(exp Expression) int {
 	values := GetValuesAsSlice(exp)
+	if len(values) == 0 {
+		return 0
+	}
 
 	return values[0].Degree
 }

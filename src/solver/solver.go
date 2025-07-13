@@ -2,6 +2,7 @@ package solver
 
 import (
 	"computorv1/src/expression"
+	"computorv1/src/number"
 	"computorv1/src/polynomial"
 	"fmt"
 	"math"
@@ -10,7 +11,11 @@ import (
 func Solve(pol polynomial.Polynomial) {
 	switch expression.GetHightestDegree(*pol.Left) {
 	case 0:
-		fmt.Println("No solution")
+		if expression.Str(*pol.Left) == expression.Str(*pol.Right) {
+			fmt.Println("Any real number is a solution")
+		} else {
+			fmt.Println("No solution")
+		}
 	case 1:
 		solveDegree1(pol)
 	case 2:
@@ -39,36 +44,50 @@ func solveDegree1(pol polynomial.Polynomial) {
 func solveDegree2(pol polynomial.Polynomial) {
 	left := pol.Left
 	fmt.Println(" Delta:")
+
+	a, ok := left.Values[2]
+	if !ok {
+		a = number.Create(0, 2)
+	}
+	b, ok := left.Values[1]
+	if !ok {
+		b = number.Create(0, 1)
+	}
+	c, ok := left.Values[0]
+	if !ok {
+		c = number.Create(0, 0)
+	}
+
 	fmt.Println("  •", fmt.Sprintf(
 		"%g^2 - 4 * %g * %g",
-		left.Values[1].Value,
-		left.Values[0].Value,
-		left.Values[2].Value,
+		b.Value,
+		c.Value,
+		a.Value,
 	))
-	delta := math.Pow(float64(left.Values[1].Value), 2)
-	delta -= 4 * float64(left.Values[0].Value) * float64(left.Values[2].Value) 
+	delta := math.Pow(float64(b.Value), 2)
+	delta -= 4 * float64(c.Value) * float64(a.Value) 
 	fmt.Println("  •", fmt.Sprintf("%g", delta))
 
 	if delta > 0 {
 		fmt.Println("Delta is strictly positive, so there are 2 real solutions:")
 	
-		sol1 := (-left.Values[1].Value - float32(math.Sqrt(delta))) / (2 * left.Values[2].Value)
-		sol2 := (-left.Values[1].Value + float32(math.Sqrt(delta))) / (2 * left.Values[2].Value)
+		sol1 := (-b.Value - float32(math.Sqrt(delta))) / (2 * a.Value)
+		sol2 := (-b.Value + float32(math.Sqrt(delta))) / (2 * a.Value)
 		fmt.Printf("%g\n", sol1)
 		fmt.Printf("%g\n", sol2)
 	} else if delta == 0 {
 		fmt.Println("Delta is equal to 0, so there is 1 real solution:")
 	
-		sol := -left.Values[1].Value / (2 * left.Values[2].Value)
+		sol := -b.Value / (2 * a.Value)
 		fmt.Printf("%g\n", sol)
 	} else {
 		fmt.Println("Delta is strictly negative, so there are 2 complex solutions:")
 		
 		delta = -delta
-		denominator := (2 * left.Values[2].Value)
-		ratio := int(left.Values[1].Value) % int(denominator)
+		denominator := (2 * a.Value)
+		ratio := int(b.Value) % int(denominator)
 
-		firstNumerator := (-left.Values[1].Value) / float32(ratio)
+		firstNumerator := (-b.Value) / float32(ratio)
 		secondNumerator := float32(math.Sqrt(delta)) / float32(ratio)
 		denominator = denominator / float32(ratio)
 

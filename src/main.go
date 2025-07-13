@@ -10,6 +10,13 @@ import (
 )
 
 func main() {
+	defer func() {
+		if err := recover(); err != nil {
+			fmt.Println("Error:", err)
+			os.Exit(1)
+		}
+	}()
+
     args := os.Args[1:]
 
 	var polynomialInput string = args[0]
