@@ -71,5 +71,4 @@ func BasicTransfer(from *expression.Expression, to *expression.Expression, key i
 func DivideTransfer(from *expression.Expression, to *expression.Expression, key int) {
 	expression.Append(to, number.Create(from.Values[key].Value, 0))
 	from.Values[key].Value = 1
-
 }
