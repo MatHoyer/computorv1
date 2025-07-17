@@ -28,11 +28,17 @@ func Parse(input string) *polynomial.Polynomial {
 	pol := polynomial.Create(expL, expR)
 
 	var leftParts []string = ParseSide(sides[0])
+	if len(leftParts) == 0 {
+		panic("Left side is empty")
+	}
 	for _, part := range(leftParts) {
 		expression.Append(expL, ParsePart(part))
 	}
 
 	var rightParts []string = ParseSide(sides[1])
+	if len(rightParts) == 0 {
+		panic("Right side is empty")
+	}
 	for _, part := range(rightParts) {
 		expression.Append(expR, ParsePart(part))
 	}

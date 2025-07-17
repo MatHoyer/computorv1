@@ -7,22 +7,12 @@ import (
 type Number struct {
     Value 	float32
     Degree  int
-	IsRoot	bool
 }
 
 func Create(value float32, degree int) *Number {
 	return &Number{
 		Value: value,
 		Degree: degree,
-		IsRoot: false,
-	}
-}
-
-func CreateRoot(value float32, degree int) *Number {
-	return &Number{
-		Value: value,
-		Degree: degree,
-		IsRoot: true,
 	}
 }
 
@@ -51,9 +41,6 @@ func Eq(num Number, other Number) bool {
 		return false
 	}
 	if num.Degree != other.Degree {
-		return false
-	}
-	if num.IsRoot != other.IsRoot {
 		return false
 	}
 	return true
